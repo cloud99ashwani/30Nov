@@ -1,0 +1,107 @@
+docker pull amazonlinux
+docker run -it amazonlinux bin/sh
+
+
+docker search mysql
+
+Docker pull mysql
+Docker pull mysql:latest
+Docker pull mysql:8.0.35-debian
+
+
+docker rmi [image_name] | [image_id] 
+
+docker ps -a
+docker containter ps -a
+docker rm [cotainer_id] | [container_name]
+docker rm [cotainer_id] | [container_name] --force
+docker 
+docker tag mysql:latest mysql:current
+
+
+docker run nginx
+docker run --name mynginx nginx (dont create if already exists)
+
+docker rm [container_id] ... [container_id] .. (Already stoped)
+
+docker stop [container_id] ... [container_id] .. 
+docker run --name mynginx -p80:80 nginx
+docker run --name mynginx7 -p7777:80 nginx
+docker run -d --name mynginx81 -p8881:80 nginx
+
+docker exec -it mynginx81 /bin/bash
+docker exec -it mynginx81 du
+docker exec -it mynginx81 echo welcome
+docker exec -it mynginx81 mkdir devops_traning
+docker logs mynginx
+docker inspect mynginx81
+docker container stats
+
+
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=root  -d mysql
+docker exec -it mysql mysql -uroot -proot
+
+docker exec mysql sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > ./all-databases_backup.sql
+
+docker run --name mysql_DB -e MYSQL_ROOT_PASSWORD=root -d mysql
+docker exec -it mysql_DB mysql -uroot -proot
+
+docker exec -i mysql_DB sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < ./all-databases_backup.sql
+
+docker run --name mysql_DB_77 -e MYSQL_ROOT_PASSWORD=root -d -p3399:3306 mysql
+docker run --name mysql_DB_88 -e MYSQL_ROOT_PASSWORD=root -d -p3388:3306 mysql
+
+DBweaver connection string (if face any problem in connectivity)
+jdbc:mysql://localhost:3399?allowPublicKeyRetrieval=true&useSSL=false
+
+docker run --name mysql_DB -v ~/AWS/mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d -p 6666:3306 mysql
+docker exec -it mysql_DB mysql -uroot -proot
+docker run --name mysql_DB_99 -v ~/AWS/mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d -p 7777:3306 mysql
+
+
+docker inspect [container_id]
+
+docker commit mysql_DB mysql_db_training # ImageName = ubantu-os-image
+docker run --name mysql_DB -v ~/AWS/mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d -p 6666:3306 mysql_db_training
+docker exec -it mysql_DB mysql -uroot -proot
+docker diff mysql_DB
+
+#-------------create image of your custom projects-----------------
+docker pull mysql = docker pull docker.io/mysql/mysql:latest
+docker run mysql/mysql:8.8.8
+docker build -t cloud99ashwani/hello-world-java:10.10.10 projects/hello-world/hello-world-java/.
+docker run -p 5000:5000 cloud99ashwani/hello-world-java:10.10.10
+docker push cloud99ashwani/hello-world-java:10.10.10
+docker rmi cloud99ashwani/hello-world-java:10.10.10
+docker run -p 5000:5000 cloud99ashwani/hello-world-java:10.10.10
+#---------- create another image after modify the code
+#stop the container running before on port 5000
+docker build -t cloud99ashwani/hello-world-java:20.20.20 projects/hello-world/hello-world-java/.
+docker push cloud99ashwani/hello-world-java:20.20.20
+docker run --name helloworld -p5000:5000 cloud99ashwani/hello-world-java:20.20.20
+
+# create image from container
+docker export --output="helloworld_container.tar" helloworld
+docker import helloworld_container.tar --change 'ENTRYPOINT ["sh", "-c", "java -jar /hello-world-java.jar"]' helloworld_container_img:99.99.99
+docker run -p5000:5000 helloworld_container_img:99.99.99
+
+# save image to local drive
+docker save –-output="helloworld_img.tar" helloworld_container_img:99.99.99
+docker load --input helloworld_img.tar
+
+
+
+
+#-----------SQL------------------
+create database training;
+use training;
+create table Person(
+Id int,
+LastName varchar(255),
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+);
+insert into Person values(1, 'Guest', 'Guest', 'Address','City');
+select * from Person;
+#-----------------------------
